@@ -1,0 +1,5 @@
+{% if pk %}
+    <a href="{% url link pk %}" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100" role="menuitem" tabindex="-1" id="menu-item-0">{{title}}</a>
+{% else %}
+    <a href="{% url link %}" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100" role="menuitem" tabindex="-1" id="menu-item-0">{{title}}</a>
+{% endif %}

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% load static %}
+    <div>
+        <h2 class="font-medium text-violet-500 text-lg mb-2">{{post.title}}</h2>
+        <p class="text-sm">{{post.content}}</p>
+        <br>
+        <div class="flex items-center justify-between">
+            <div>
+                <h4 class="text-xs font-normal">Author : {{post.author.first_name}} {{post.author.last_name}}</h4>
+                <h4 class="text-xs font-normal">Published Date : {{post.pub_date}}</h4>
+            </div>
+            <div class="flex" x-data="likeState()">
+                {% if post.likes.first %}
+                    {% include 'blog/components/like_dislike.html' with id=post.id liked=post.likes.first.liked disliked=post.likes.first.disliked %}
+                {% else %}
+                    {% include 'blog/components/like_dislike.html' with id=post.id liked=False disliked=False %}
+                {% endif %}
+            </div>
+        </div>
+        <br> 
+        <form action="{% url 'blog:detail' post.id %}" method="post">
+            {% csrf_token %}
+            {{form}}
+            <button class="text-sm text-red-500 hover:bg-gray-50 rounded border p-1 font-medium" type="submit">comment</button>
+        </form>
+        <br>
+        <div class="text-xs">
+            {% for comment in post.comment_set.all %}
+                {% include 'blog/components/comment.html' with comment=comment %}
+            {% endfor %}
+            {% include 'blog/components/reply_modal.html' %}
+        </div>
+    </div>
+    <script src="{% static 'js/blog/detail.js' %}"></script>
+{% endblock  %}

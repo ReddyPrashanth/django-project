@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="py-2 flex">
+        <a href="{% url 'blog:add_post' %}" class="border border-gray-300 px-2 py-1 text-xs text-violet-600 font-semibold rounded">Add Post</a>
+    </div>
+    {% for post in page_obj %}
+        {% include 'blog/components/card.html' with post=post %}
+    {% empty %}
+        <p class="text-sm">No posts found.</p>
+    {% endfor %}
+    {% include 'blog/components/pagination.html' with page_obj=page_obj%}
+{% endblock  %}

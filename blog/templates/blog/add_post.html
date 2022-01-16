@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div>
+        <form method="post" action="{% url 'blog:add_post' %}">
+            {% csrf_token %}
+            {{form}}
+        </form>
+    </div>
+{% endblock  %}

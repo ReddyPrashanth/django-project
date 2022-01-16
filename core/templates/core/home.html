@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% load static %}
+    <div class="flex items-center justify-center border rounded p-2 font-medium text-violet-600">
+        <div class="w-1/2 text-center px-2">
+            <p>Welcome to blog application. Adding blog posts is made easier now.</p>
+        </div>
+        <div class="w-1/2 text-center">
+            <img src="{% static 'images/cover_page.png' %}" alt="cover page image">
+        </div>
+    </div>
+    <div class="py-14">
+        <div class="text-center font-semibold text-violet-600">How it works</div>
+        <div class="flex text-sm items-center justify-center py-4">
+            <div class="text-center w-1/3 lg:w-1/6 text-xs">
+                <p class="font-semibold">1.Sign Up</p>
+                <p class="py-2">User registration is required to create and manage your content</p>
+            </div>
+            <div class="w-1/3 lg:w-1/6 text-center text-xs">
+                <p class="font-semibold">2.Subscribe</p>
+                <p class="py-2">Subscribe to a plan to get access to create content</p>
+            </div>
+            <div class="w-1/3 lg:w-1/6 text-center text-xs">
+                <p class="font-semibold">3.Create</p>
+                <p class="py-2">Start creating your blog posts and other content</p>
+            </div>
+        </div>
+    </div>
+    <div x-data="purchasePlanState()" class="flex hover:cursor-pointer items-center justify-center mb-6">
+        <div @click="updateSelection('free')" :class="selected === 'free' ? `${classes} border-green-500` : classes">
+            <div class="text-center">
+                <div class="font-semibold">Free Trial</div>
+                <p class="text-lg py-6 text-violet-600">$0.00</p>
+            </div>
+            <ul class="text-xs list-disc list-inside pb-14">
+                <li class="p-1">Up to 20 blog posts are free to create</li>
+                <li class="p-1">Can view 50 blogs per week</li>
+                <li class="p-1">Upgrade plan anytime</li>
+                <li class="p-1">Customer service unavailable</li>
+            </ul>
+        </div>
+        <div @click="updateSelection('starter')" class="max-w-sm hover:cursor-pointer w-full text-white border shadow-md rounded mr-2 p-2 bg-green-500">
+            <div class="text-center">
+                <div class="font-semibold">Starter</div>
+                <p class="text-lg py-6">$10.00</p>
+            </div>
+            <ul class="text-xs list-disc list-inside pb-14">
+                <li class="p-1">Can create unlimited blog posts</li>
+                <li class="p-1">Can view unlimited blog posts</li>
+                <li class="p-1">Upgrade plan anytime</li>
+                <li class="p-1">Customer service available through email</li>
+            </ul>
+        </div>
+        <div @click="updateSelection('premium')" :class="selected === 'premium' ? `${classes} border-green-500` : classes">
+            <div class="text-center">
+                <div class="font-semibold">Premium</div>
+                <p class="text-lg py-6 text-violet-600">$40.00</p>
+            </div>
+            <ul class="text-xs list-disc list-inside pb-14">
+                <li class="p-1">Can create unlimited blog posts</li>
+                <li class="p-1">Can view unlimited blog posts</li>
+                <li class="p-1">Upgrade option not available</li>
+                <li class="p-1">24/7 Customer service available</li>
+            </ul>
+        </div>
+    </div>
+    <hr>
+    <div class="flex items-center justify-center py-6">
+        <button class="rounded p-1 bg-green-500 text-white text-xs font-semibold">Purchase Plan</button>
+    </div>
+    <script src="{% static 'js/core/home.js' %}"></script>
+{% endblock  %}
