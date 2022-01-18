@@ -1,9 +1,20 @@
 <div class="border border-gray-200 p-2 rounded mb-2">
     <h2 class="font-medium text-violet-600 text-base mb-2">{{post.title}}</h2>
-    <p class="text-sm mb-2">
-        {{post.content}}
-    </p>
-    <a href="{% url 'blog:detail' post.id %}" 
+    <div class="text-sm mb-2">
+        {{post.content|safe}}
+    </div>
+    <div class="flex items-center justify-between">
+        <a href="{% url 'blog:detail' post.id %}" 
         class="border p-1 rounded text-sm text-red-700 hover:text-red-500"
         >more &raquo;</a>
+        {% if post.author_id == user.id %}
+            <div class="flex">
+                <a class="border p-1 text-sm text-violet-500 hover:text-violet-600 rounded mr-2" href="{% url 'blog:update' post.id %}">update</a>
+                <form action="{% url 'blog:delete' post.id %}" method="post">
+                    {% csrf_token %}
+                    <button class="border p-1 text-sm rounded hover:text-red-600 text-red-700" type="submit">delete</button>
+                </form>
+            </div>
+        {% endif %}
+    </div>
 </div>

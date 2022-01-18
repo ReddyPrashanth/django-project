@@ -7,8 +7,10 @@ from . import views
 app_name = 'blog'
 
 urlpatterns = [
-    path('', views.PostListView.as_view(), name='index'),
     path('add/', views.AddPostView.as_view(), name="add_post"),
+    path('', views.PostListView.as_view(), name='index'),
     path('api/', include('blog.api.urls')),
-    path('<int:pk>', views.PostDetailView.as_view(), name='detail')
+    path('<int:pk>/delete', views.PostDeleteView.as_view(), name='delete'),
+    path('<int:pk>/update', views.PostUpdateView.as_view(), name='update'),
+    path('<int:pk>/', views.PostDetailView.as_view(), name='detail')
 ]

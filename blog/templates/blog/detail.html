@@ -4,7 +4,7 @@
     {% load static %}
     <div>
         <h2 class="font-medium text-violet-500 text-lg mb-2">{{post.title}}</h2>
-        <p class="text-sm">{{post.content}}</p>
+        <div class="text-sm">{{post.content|safe}}</div>
         <br>
         <div class="flex items-center justify-between">
             <div>
@@ -33,5 +33,5 @@
             {% include 'blog/components/reply_modal.html' %}
         </div>
     </div>
-    <script src="{% static 'js/blog/detail.js' %}"></script>
+    <script src="{% static 'app/js/blog/detail.js' %}"></script>
 {% endblock  %}

@@ -2,6 +2,7 @@ from dataclasses import fields
 from django import forms
 from .models import Comment, Post
 from ckeditor.fields import RichTextField
+from datetime import date
 
 class CommentForm(forms.ModelForm):
     content = forms.CharField(
@@ -25,8 +26,7 @@ class PostForm(forms.ModelForm):
         label="Title",
         widget=forms.TextInput(
             attrs={
-                'class': 'w-full border rounded p-1 outline-none',
-                'id': 'title'                
+                'class': 'w-full border rounded p-1 outline-none'
             }
         ), 
         required=True, 
@@ -36,8 +36,7 @@ class PostForm(forms.ModelForm):
         label="Meta Title",
         widget=forms.TextInput(
             attrs={
-                'class': 'w-full border rounded p-1 outline-none',
-                'id': 'meta_title'                
+                'class': 'w-full border rounded p-1 outline-none'
             }
         ), 
         required=True, 
@@ -47,10 +46,10 @@ class PostForm(forms.ModelForm):
         label="Slug",
         widget=forms.TextInput(
             attrs={
-                'class': 'w-full border rounded p-1 outline-none',
-                'id': 'slug'                
+                'class': 'w-full border rounded p-1 outline-none'
             }
-        ), 
+        ),
+        required=True,
         max_length=50
     )
     summary = forms.CharField(
@@ -59,13 +58,21 @@ class PostForm(forms.ModelForm):
              attrs={
                 'class': 'w-full border rounded p-2 outline-none',
                 'placeholder': 'Add a summary...',
-                'rows': '3',
-                'id': 'summary'                
+                'rows': '3'
             }  
         ), 
         required=True
     )
     content = RichTextField()
+    
+    def save(self, user=None):
+        post = super(PostForm, self).save(commit=False)
+        if user and post:
+            post.published = True
+            post.author = user
+            post.pub_date = date.today()
+        post.save()
+        return post
     
     class Meta:
         model = Post
