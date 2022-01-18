@@ -29,16 +29,15 @@
                     <span class="text-lg font-semibold text-violet-600">CMS Blog</span>
                 </a>
             </div>
+            <div>
+                {% include 'components/nav_link.html' with link="core:portfolio" title="Portfolio" margin=True %}
             {% if user.is_authenticated %}
-                <div>
-                    {% include 'components/nav_link.html' with link="blog:index" title="Blog" margin=True %}
-                    {% include 'components/account_menu.html' %}
-                </div>
+                {% include 'components/nav_link.html' with link="blog:index" title="Blog" margin=True %}
+                {% include 'components/account_menu.html' %}
             {% else %}
-                <div>
-                    {% include 'components/nav_link.html' with link="account:login" title="login" %}
-                </div>
+                {% include 'components/nav_link.html' with link="account:login" title="login" %}
             {% endif %}
+            </div>
         </nav>
     </header>
     <main class="container mx-auto py-2 flex-grow">
