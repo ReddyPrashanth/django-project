@@ -1,0 +1,14 @@
+!.vscode
+node_modules
+*.vsix
+out
+yarn.lock
+package-lock.json
+.venv
+.env
+**/__pycache__
+.vscode-test/
+.vscode-test-web/
+
+# app
+jstoolchain/node_modules

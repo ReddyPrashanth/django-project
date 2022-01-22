@@ -1,3 +1,11 @@
+// Api base URL
+const url = 'http://127.0.0.1:8000/home/portfolio/contact/';
+
+// common headers for each api request
+const headers = {
+    'X-CSRFToken': token
+}
+
 function portfolioState() {
     return {
         repos: [
@@ -32,5 +40,45 @@ function portfolioState() {
                 url: 'https://github.com/ReddyPrashanth/shopping-cart-client'
             },
         ]
+    }
+}
+
+function contactForm() {
+    return {
+        formData: {
+            name: '',
+            email: '',
+            message: ''
+        },
+        error: '',
+        onSubmit() {
+            if(
+                !this.formData.name || 
+                !this.formData.email || 
+                !this.formData.message
+            ){
+                this.error = 'All fields are required.';
+                return       
+            }
+            if(this.error) this.error = '';
+            const data = this.formData;
+            axios.post(url, data, {headers})
+                .then(response => {
+                    this.resetFormData();
+                    if(this.error) this.error = '';
+                    alert('Thank you for your contact. I will get back to you shortly.');
+                }).catch(error => {
+                    if(error.response.status != 400) {
+                        alert('Something went wrong. Try again.');
+                    }else{
+                        this.error = error.response.data.error;
+                    }
+                })
+        },
+        resetFormData() {
+            this.formData.name = '';
+            this.formData.email = '';
+            this.formData.message = '';
+        }
     }
 }
