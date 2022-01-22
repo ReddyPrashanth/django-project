@@ -66,7 +66,7 @@ function contactForm() {
                 .then(response => {
                     this.resetFormData();
                     if(this.error) this.error = '';
-                    alert('Message sent successfully.');
+                    alert('Thank you for your contact. I will get back to you shortly.');
                 }).catch(error => {
                     if(error.response.status != 400) {
                         alert('Something went wrong. Try again.');

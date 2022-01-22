@@ -35,7 +35,10 @@
                 <div class="flex justify-center w-1/2">
                     <div>
                         <h2 class="mr-2 font-extrabold text-4xl">Hi, I am Prashanth Sreepathi, a software engineer</h2>
-                        <button class="px-2 py-1 bg-violet-600 text-white rounded mt-4">Email Me</button>
+                        <div class="mt-4">
+                            <a href="#contact" class="p-2 bg-violet-600 text-white rounded">Email Me</a>
+                        <a href="{% url 'core:resume' %}?test=data" target="_blank" class="p-2 bg-green-600 text-white rounded">Download Resume</a>
+                        </div>
                     </div>
                 </div>
                 <div class="flex justify-center w-1/2">
@@ -202,8 +205,9 @@
                         <div class="mb-4">
                             <h4 class="font-medium text-lg">CI/CD Tools</h4>
                             <div class="font-light">
-                                <p class="text-sm py-1">Jenkins</p>
+                                <p class="text-sm py-1">Gitlab</p>
                                 <p class="text-sm py-1">Github</p>
+                                <p class="text-sm py-1">Jenkins</p>
                             </div>
                         </div>
                         <div>
@@ -236,7 +240,7 @@
         <div id="contact" class="bg-sky-50">
             <div class="container mx-auto py-20 flex">
                 <div class="w-1/2">
-                    <h4 class="text-slate-500 mb-4">CONTACT ME</h4>
+                    <h4 class="text-slate-500 mb-4">EMAIL CONTACT</h4>
                     <form @submit.prevent="onSubmit()" x-data="contactForm()">
                         <div x-show="error" class="border text-xs border-red-600 rounded text-red-500 p-2">
                             <span x-text="error"></span>
@@ -258,12 +262,15 @@
                         </div>
                     </form>
                 </div>
+                <div class="flex justify-center w-1/2">
+                    <img class="ml-2 rounded-2xl h-96" src="{% static 'app/images/portfolio.jpg' %}" alt="portfolio">
+                </div>
             </div>
         </div>
     </main>
     <footer class="border-gray-200 p-4 border flex items-center justify-between">
         <div class="text-xs">
-            <p>@ Copyright 2022 CMS blog. All rights reserved.</p>
+            <p>@ Powered by django framework, tailwind and alpine.js</p>
         </div>
         <div class="text-xs flex">
             <a href="https://www.facebook.com/" target="_blank" class="ml-2">
