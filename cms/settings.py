@@ -11,22 +11,26 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
-from os import path
+from dotenv import load_dotenv
+from os import path, getenv
+from django.core.management.utils import get_random_secret_key
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+load_dotenv(path.join(BASE_DIR, '.env'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-!dj=_j0!mz2v94a9&8r!=f5)3p#s3nntqmzn97r&#-1y6m*mie'
+SECRET_KEY = getenv('DJANGO_SECRET_KEY', get_random_secret_key())
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = getenv('DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
+
+DEVELOPMENT_MODE = getenv('DEVELOPMENT_MODE', 'False') == 'True'
 
 
 # Application definition
@@ -82,11 +86,11 @@ WSGI_APPLICATION = 'cms.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'cms',
-        'USER': 'docker',
-        'PASSWORD': 'secret',
-        'HOST': 'localhost',
-        'PORT': '5432'
+        'NAME': getenv('DATABASE_NAME', 'postgres'),
+        'USER': getenv('DATABASE_USER', 'postgres'),
+        'PASSWORD': getenv('DATABASE_PASSWORD', 'password'),
+        'HOST': getenv('DATABASE_HOST', 'localhost'),
+        'PORT': getenv('DATABASE_PORT', '5432')
     }
 }
 
@@ -131,8 +135,6 @@ STATIC_URL = '/static/'
 
 # STATIC_ROOT = path.join(BASE_DIR, 'static')
 
-# CKEDITOR_BASEPATH = BASE_DIR / "static/ckeditor/ckeditor/"
-
 CKEDITOR_CONFIGS = {
     'default': {
         'width': '100%', 
@@ -152,4 +154,4 @@ LOGIN_REDIRECT_URL = '/home/'
 
 # SNS Config
 
-SNS_ARN = ''
+SNS_ARN = 'arn:aws:sns:us-east-2:424848754882:portfolio-contact'
