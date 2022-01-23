@@ -28,7 +28,7 @@ SECRET_KEY = getenv('DJANGO_SECRET_KEY', get_random_secret_key())
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = getenv('DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
 
 DEVELOPMENT_MODE = getenv('DEVELOPMENT_MODE', 'False') == 'True'
 
@@ -134,8 +134,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # STATIC_ROOT = path.join(BASE_DIR, 'static')
-
-# CKEDITOR_BASEPATH = BASE_DIR / "static/ckeditor/ckeditor/"
 
 CKEDITOR_CONFIGS = {
     'default': {
