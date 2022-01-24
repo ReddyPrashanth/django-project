@@ -36,6 +36,7 @@ DEVELOPMENT_MODE = getenv('DEVELOPMENT_MODE', 'False') == 'True'
 # Application definition
 
 INSTALLED_APPS = [
+    'store.apps.StoreConfig',
     'core.apps.CoreConfig',
     'account.apps.AccountConfig',
     'blog.apps.BlogConfig',

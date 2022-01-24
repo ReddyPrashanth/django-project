@@ -1,0 +1,19 @@
+{% extends 'store/base.html' %}
+
+{% block content %}
+    <div class="container mx-auto py-4">
+       <div class="grid grid-cols-6 gap-4">
+            {% for product in object_list %}
+                <div class="border text-sm p-2 rounded">
+                    <h4 class="font-semibold">{{product.name}}</h4>
+                    <p class="text-xs">{{product.description}}</p>
+                    <p>Price: ${{product.price}}</p>
+                </div>
+            {% empty %}
+                <div class="text-center">
+                    No products found.
+                </div>
+            {% endfor %}
+       </div>
+    </div>
+{% endblock  %}

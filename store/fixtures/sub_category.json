@@ -1,0 +1,77 @@
+[
+{
+    "model": "store.subcategory",
+    "pk": 1,
+    "fields": {
+        "name": "Shoes",
+        "slug": "shoes",
+        "description": "Shoes sub category",
+        "sort_order": 0,
+        "created_at": "2022-01-23T19:36:09.523Z",
+        "categories": [
+            1,
+            2
+        ]
+    }
+},
+{
+    "model": "store.subcategory",
+    "pk": 2,
+    "fields": {
+        "name": "Clothing",
+        "slug": "clothing",
+        "description": "Clothing sub category",
+        "sort_order": 1,
+        "created_at": "2022-01-23T19:36:09.525Z",
+        "categories": [
+            1,
+            2
+        ]
+    }
+},
+{
+    "model": "store.subcategory",
+    "pk": 3,
+    "fields": {
+        "name": "Accessories",
+        "slug": "accessories",
+        "description": "Accessories sub category",
+        "sort_order": 2,
+        "created_at": "2022-01-23T19:36:09.528Z",
+        "categories": [
+            1,
+            2
+        ]
+    }
+},
+{
+    "model": "store.subcategory",
+    "pk": 4,
+    "fields": {
+        "name": "New & Trending",
+        "slug": "new-and-trending",
+        "description": "New and trending sub category",
+        "sort_order": 3,
+        "created_at": "2022-01-23T19:36:09.529Z",
+        "categories": [
+            1,
+            2
+        ]
+    }
+},
+{
+    "model": "store.subcategory",
+    "pk": 5,
+    "fields": {
+        "name": "Shop by Sport",
+        "slug": "shopy-by-sport",
+        "description": "Shop by sport sub category",
+        "sort_order": 4,
+        "created_at": "2022-01-23T19:36:09.531Z",
+        "categories": [
+            1,
+            2
+        ]
+    }
+}
+]

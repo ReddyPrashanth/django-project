@@ -1,0 +1,29 @@
+{% extends 'store/base.html' %}
+
+{% block content %}
+    {% load static %}
+    <div x-data="storeState()" class="border-b flex items-center justify-center text-sm">
+        {% for category in object_list %}
+            {% include 'store/components/sub_category_list.html' with category=category %}
+        {% endfor %}
+    </div>
+    <div class="bg-cover bg-center flex items-center" style="background-image: url('{% static 'app/images/store-cover.jpeg' %}'); height:80vh;">
+        <div class="text-white container mx-auto">
+            <div class="py-4">
+                <h4 class="font-bold text-3xl">PRACTICE LOVE</h4>
+                <p class="py-2">Check out the new Valentin's Day collection</p>
+                <div class="mb-3">
+                    <a href="{% url 'store:category_products' category='men'%}" class="bg-white p-2 text-sm font-semibold text-black">
+                        SHOP WOMEN &rarr;
+                    </a>
+                </div>
+                <div class="mb-3">
+                    <a href="{% url 'store:category_products' category='women' %}" class="bg-white p-2 text-sm font-semibold text-black">
+                        SHOP MEN &rarr;
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'app/js/store/index.js' %}"></script>
+{% endblock  %}
