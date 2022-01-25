@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseBadRequest
 from django.views.generic import ListView
-from .models import Category, Product
+from .models import Category, Product, Size
 # Create your views here.
 
 class CategoryListView(ListView):
@@ -20,12 +20,18 @@ def products(request, category, subcategory=None, style=None):
 class ProductListView(ListView):
     template_name = 'store/product_list.html'
     model = Product
+    paginate_by = 24
     
-    # def get(self, request, *args, **kwargs):
-    #     print(kwargs)
-    #     if not (bool(kwargs.get('category', None)) or bool(kwargs.get('subcategory', None)) or bool(kwargs.get('style', None))): 
-    #         return HttpResponseBadRequest()
-    #     return super().get(request, *args, **kwargs)
+    def get_context_data(self, *args, **kwargs):
+        context = super(ProductListView, self).get_context_data(*args, **kwargs) 
+        sizes = self.get_sizes()
+        print(sizes)
+        context['sizes'] = sizes
+        return context
+    
+    def get_sizes(self):
+        return Size.objects.all().values('id', 'name', 'slug')
+    
     def get_queryset(self):
         category = self.kwargs.get('category')
         subcategory = self.kwargs.get('subcategory')

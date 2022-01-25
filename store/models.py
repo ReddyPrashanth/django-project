@@ -1,3 +1,5 @@
+from email.policy import default
+from lib2to3.pytree import Base
 from django.db import models
 from datetime import datetime
 
@@ -8,7 +10,7 @@ class BaseModel(models.Model):
     slug = models.CharField(max_length=50)
     description = models.TextField()
     sort_order = models.PositiveSmallIntegerField()
-    created_at = models.DateTimeField(default=datetime.now)
+    created_at = models.DateTimeField(blank=True, auto_now_add=True)
     
     class Meta:
         abstract = True
@@ -73,4 +75,51 @@ class Product(BaseModel):
         ]
         constraints = [
             models.UniqueConstraint(fields=['slug'], name='uq_slug_product'),
+        ]
+   
+class Color(models.Model):
+    name = models.CharField(max_length=20)
+    active = models.BooleanField(default=True)
+    sort_order = models.PositiveSmallIntegerField()
+    
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['name'], name='uq_name_color'),
+        ]
+    
+class Size(BaseModel):
+    active = models.BooleanField(default=True)
+    
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['slug'], name='uq_slug_size'),
+        ]
+    
+class ProductInventory(models.Model):
+    image_url = models.CharField(max_length=100,null=True)
+    active = models.BooleanField(default=True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    color = models.ForeignKey(Color, on_delete=models.CASCADE)
+    
+    class Meta:
+        indexes = [
+            models.Index(fields=['product_id'], name='idx_product_id_inventory'),
+            models.Index(fields=['color_id'], name='idx_color_id_inventory')
+        ]
+
+class InventorySize(models.Model):
+    size = models.ForeignKey(Size, on_delete=models.CASCADE)
+    product_inventory = models.ForeignKey(ProductInventory, on_delete=models.CASCADE)
+    quantity = models.PositiveSmallIntegerField(default=0)
+    
+    class Meta:
+        indexes = [
+            models.Index(fields=['size_id'], name='idx_size_id_inventory_size'),
+            models.Index(fields=['product_inventory_id'], name='idx_inventory_id_size')
         ]
