@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponseBadRequest
+from django.db.models import Q
 from django.views.generic import ListView
 from .models import Category, Product, Size
 # Create your views here.
@@ -22,10 +22,9 @@ class ProductListView(ListView):
     model = Product
     paginate_by = 24
     
-    def get_context_data(self, *args, **kwargs):
-        context = super(ProductListView, self).get_context_data(*args, **kwargs) 
+    def get_context_data(self, **kwargs):
+        context = super(ProductListView, self).get_context_data(**kwargs) 
         sizes = self.get_sizes()
-        print(sizes)
         context['sizes'] = sizes
         return context
     
@@ -33,7 +32,16 @@ class ProductListView(ListView):
         return Size.objects.all().values('id', 'name', 'slug')
     
     def get_queryset(self):
+        query_params = self.request.GET
         category = self.kwargs.get('category')
         subcategory = self.kwargs.get('subcategory')
         style = self.kwargs.get('style')
-        return Product.objects.filter(category__slug=category, sub_category__slug=subcategory, styles__slug=style)
+        query = Q(category__slug=category, sub_category__slug=subcategory, styles__slug=style)
+        size = query_params.get('size', False)
+        min_price = query_params.get('min_price', False)
+        max_price = query_params.get('max_price', False)
+        if(size):
+            query &= Q(productinventory__inventorysize__size_id=size)
+        if(min_price and max_price):
+            query = Q(price__gte=min_price, price__lte=max_price)
+        return Product.objects.filter(query).distinct()

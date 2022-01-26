@@ -1,21 +1,13 @@
 {% extends 'store/base.html' %}
-
-{% block content %}
 {% load static %}
+{% block content %}
     <div class="px-4 flex">
-        <div class="w-1/6 border-r py-4 pr-2">
-            <h4 class="font-medium text-violet-600 text-sm">Product Filters</h4>
-            <br>
-            <div class="border rounded p-2">
-                <h4 class="font-medium text-xs">Product Sizes</h4>
-                <div x-data="sizeFilterState()">
-                    {% for size in sizes %}
-                        <button @click="onSizeSelect({{size.id}})" class="text-xs border font-medium px-2 rounded {% if request.GET.size == size.id|stringformat:'i'%}text-white bg-violet-600{% endif %}">{{size.name}}</button>
-                    {% endfor %}
-                </div>
-            </div>
+        <div class="w-1/5 lg:w-1/6 border-r py-4 pr-2">
+            <h4 class="font-medium text-violet-600 text-sm mb-4">Product Filters</h4>
+            {% include 'store/components/product_size_filter.html' %}
+            {% include 'store/components/price_range_filter.html' %}
         </div>
-        <div class="w-5/6 py-4 pl-2">
+        <div class="w-4/5 lg:w-5/6 py-4 pl-2">
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {% for product in page_obj %}
                     {% include 'store/components/product_card.html' with product=product %}
@@ -26,7 +18,7 @@
                 {% endfor %}
             </div>
             <div class="text-center">
-                    {% include 'blog/components/pagination.html' with page_obj=page_obj%}
+                    {% include 'components/pagination.html' with page_obj=page_obj%}
             </div>
         </div>
     </div>
