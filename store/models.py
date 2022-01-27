@@ -64,6 +64,9 @@ class Product(BaseModel):
     sub_category = models.ForeignKey(SubCategory, on_delete=models.CASCADE)
     styles = models.ManyToManyField(Style)
     
+    def inventory(self):
+        return ProductInventory.objects.filter(product_id=self.id).all()
+    
     def __str__(self):
         return self.name
     

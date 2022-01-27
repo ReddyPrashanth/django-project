@@ -8,6 +8,21 @@
             {% include 'store/components/price_range_filter.html' %}
         </div>
         <div class="w-4/5 lg:w-5/6 py-4 pl-2">
+            <div class="mb-4">
+                <div x-data="clearFilterState()" class="text-xs flex items-center">
+                    {% for k,v in request.GET.items %}
+                        {% if k != 'page' %}
+                        <div class="border flex p-1 mr-2">
+                            <p class="uppercase">{{k}} {{v}}</p>
+                            <button @click="removeFilter('{{k}}')" class="text-gray-400 ml-2 px-1 hover:bg-gray-200">X</button>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                    <div class="border flex p-1 mr-2">
+                        <a href="{{request.path}}" class="hover:underline">CLEAR FILTERS</a>
+                    </div>
+                </div>
+            </div>
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {% for product in page_obj %}
                     {% include 'store/components/product_card.html' with product=product %}

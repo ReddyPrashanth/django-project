@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.db.models import Q
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from .models import Category, Product, Size
 # Create your views here.
 
@@ -45,3 +45,16 @@ class ProductListView(ListView):
         if(min_price and max_price):
             query = Q(price__gte=min_price, price__lte=max_price)
         return Product.objects.filter(query).distinct()
+    
+class ProductDetailView(DetailView):
+    model = Product
+    template_name = 'store/product_detail.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["sizes"] = self.get_sizes()
+        return context
+
+    def get_sizes(self):
+        return Size.objects.all().values('id', 'name', 'slug')
+    
