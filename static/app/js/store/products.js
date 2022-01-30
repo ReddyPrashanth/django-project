@@ -1,4 +1,3 @@
-console.log('products.js loaded');
 
 function buildQueryObject() {
     const href = window.location.href;

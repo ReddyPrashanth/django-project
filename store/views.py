@@ -2,12 +2,13 @@ from django.shortcuts import render
 from django.db.models import Q
 from django.views.generic import ListView, DetailView
 from .models import Category, Product, Size
+from cart.cart import Cart
 # Create your views here.
 
 class CategoryListView(ListView):
     template_name = 'store/index.html'
     model = Category
-    
+
     def get_queryset(self):
         return self.model.objects.all()
 

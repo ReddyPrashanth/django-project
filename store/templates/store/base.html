@@ -11,6 +11,9 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
         var token = "{{ csrf_token }}";
+        const headers = {
+            'X-CSRFToken': token
+        }
     </script>
 </head>
 <body class="flex flex-col min-h-screen">
@@ -35,8 +38,9 @@
                 {% include 'components/nav_link.html' with link="blog:index" title="Blog" margin=True %}
                 {% include 'components/account_menu.html' %}
             {% else %}
-                {% include 'components/nav_link.html' with link="account:login" title="login" %}
+                {% include 'components/nav_link.html' with link="account:login" title="Login" margin=True%}
             {% endif %}
+            <a href="{% url 'cart:detail' %}" x-data="cartQuantity()" x-init="init()" x-on:updatecart.window="updateCart($event)" class="text-sm uppercase font-medium text-violet-700 px-2 border py-1 rounded hover:border-black">Cart <span x-show="total_products>0" class="ml-1 text-xs p-1 text-black rounded-full" x-text="total_products"></span></a>
             </div>
         </nav>
     </header>
@@ -105,5 +109,6 @@
             </a>
         </div>
     </footer>
+    <script src="{% static 'app/js/store/base.js' %}"></script>
 </body>
 </html>

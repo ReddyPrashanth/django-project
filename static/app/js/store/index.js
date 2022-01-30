@@ -1,4 +1,3 @@
-console.log('store index.js loaded');
 
 function storeState() {
     return {
