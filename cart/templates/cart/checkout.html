@@ -1,0 +1,14 @@
+{% extends 'store/base.html' %}
+
+{% block content %}
+    <div class="container py-4 mx-auto flex justify-center ">
+        <div class="border p-4 rounded w-full lg:w-1/2">
+            <div class="text-sm text-center">
+                <h2 class="font-semibold text-xl mb-2">Your order being placed.</h2>
+                <p class="mb-2">You will receice an email once your order is confirmed.</p>
+                <p class="mb-4 text-violet-600">Thank you for shopping with us.</p>
+                <a class="bg-black text-white p-2" href="{% url 'store:index' %}">Continue Shopping</a>
+            </div>
+        </div>
+    </div>
+{% endblock  %}

@@ -50,6 +50,16 @@
                 </div>
             </div>
         </div>
+        <div class="py-4 container mx-auto">
+            <h2 class="uppercase font-semibold text-lg mb-2">Featured Products</h2>
+            <div class="flex overflow-x-auto space-x-2">
+                {% for inventory in featured %}
+                <div class="flex flex-shrink-0 w-52">
+                    {% include 'store/components/product_card.html' with product=inventory.product %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
     </div>
     <script src="{% static 'app/js/store/product.js' %}"></script>
 {% endblock  %}

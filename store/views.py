@@ -1,13 +1,17 @@
 from django.shortcuts import render
 from django.db.models import Q
 from django.views.generic import ListView, DetailView
-from .models import Category, Product, Size
-from cart.cart import Cart
+from .models import Category, Product, Size, ProductInventory
 # Create your views here.
 
 class CategoryListView(ListView):
     template_name = 'store/index.html'
     model = Category
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["featured"] = ProductInventory.objects.filter(featured = True)[:10]
+        return context
 
     def get_queryset(self):
         return self.model.objects.all()
@@ -54,6 +58,7 @@ class ProductDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["sizes"] = self.get_sizes()
+        context["featured"] = ProductInventory.objects.filter(featured = True)[:5]
         return context
 
     def get_sizes(self):

@@ -66,7 +66,7 @@
                 <input type="text" class="w-full p-1 my-1 outline-none border" placeholder="Enter promo code" name="promo-code" id="promo-code">
             </div>
             <div class="mb-2">
-                <button class="bg-black w-full text-white p-1 my-1">CHECKOUT</button>
+                <a :href="data.total ? '{% url 'cart:checkout' %}':'#'" class="bg-black w-full block text-center text-white p-1 my-1" :class="data.total || 'cursor-not-allowed'">CHECKOUT</a>
             </div>
             <div class="mt-4 text-sm">
                 <h4 class="font-semibold">Help & Contact Us</h4>

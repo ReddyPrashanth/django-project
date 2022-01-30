@@ -108,6 +108,7 @@ class ProductInventory(models.Model):
     active = models.BooleanField(default=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     color = models.ForeignKey(Color, on_delete=models.CASCADE)
+    featured = models.BooleanField(default=False)
     
     class Meta:
         indexes = [

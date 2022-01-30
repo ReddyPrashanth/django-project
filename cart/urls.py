@@ -9,6 +9,7 @@ app_name = 'cart'
 urlpatterns = [
     path('', views.CartDetail, name="detail"),
     path('total-products/', views.TotalProducts, name="total_products"),
+    path('checkout/', views.Checkout, name="checkout"),
     path('add/<int:product_id>', views.CartAdd, name="add"),
     path('remove/<int:product_id>', views.CartRemove, name="remove"),
 ]

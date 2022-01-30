@@ -2,8 +2,10 @@ import json
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from .cart import Cart
+from .models import Order
 from store.models import Product
 from .forms import CartAddProductForm
+from django.forms.models import model_to_dict
 
 # Create your views here.
 
@@ -47,3 +49,19 @@ def CartRemove(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     cart.remove(product=product)
     return redirect('cart:detail')
+
+def Checkout(request):
+    cart = Cart(request)
+    items = []
+    for item in cart:
+        item['product'] = model_to_dict(
+            item['product'],
+            fields=['id','name','slug','description','sub_category']
+        )
+        items.append(item)
+    if(len(items) > 0):
+        tax = cart.get_tax()
+        total_price = cart.get_total_price()
+        Order.objects.create(tax=tax, total_price=total_price, items=items)
+        cart.clear()
+    return render(request, 'cart/checkout.html')
