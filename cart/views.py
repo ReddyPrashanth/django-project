@@ -13,14 +13,15 @@ def CartAdd(request, product_id):
     cart = Cart(request)
     product = get_object_or_404(Product, id=product_id)
     data = json.loads(str(request.body, encoding='utf-8'))
+    print(data)
     form = CartAddProductForm(data)
     if form.is_valid():
         cd = form.cleaned_data
-        cart.add(product=product, quantity=cd['quantity'], update_quantity=cd['update'])
+        cart.add(product=product, quantity=cd['quantity'], size=cd['size'], update_quantity=cd['update'])
         checkout_params = cart.get_checkout_params()
         return JsonResponse({
             'total_products': len(cart),
-            'item_total_price': cart.get_item_total_price(product.id),
+            'item_total_price': cart.get_item_total_price(product_id=product.id, size=cd['size']),
             'sub_total': checkout_params['sub_total'],
             'tax': checkout_params['tax'],
             'total': checkout_params['total']
@@ -36,18 +37,23 @@ def TotalProducts(request):
 def CartDetail(request):
     cart = Cart(request)
     for item in cart:
-        item['update_quantity_form'] = CartAddProductForm(
+        sizes = item['size']
+        for size in sizes:
+            sizes[size]['update_quantity_form'] = CartAddProductForm(
                                         initial={
-                                            'quantity': item['quantity'],
-                                            'update': True
+                                            'quantity': sizes[size]['quantity'],
+                                            'update': True,
+                                            'size': size
                                         })
+            sizes[size]['total_price'] = item['price'] * sizes[size]['quantity']
     return render(request, 'cart/detail.html',
                  {'cart': cart})
     
-def CartRemove(request, product_id):
+def CartRemove(request, product_id=None, size=None):
+    print(size)
     cart = Cart(request)
     product = get_object_or_404(Product, id=product_id)
-    cart.remove(product=product)
+    cart.remove(product=product, size=size)
     return redirect('cart:detail')
 
 def Checkout(request):

@@ -11,5 +11,5 @@ urlpatterns = [
     path('total-products/', views.TotalProducts, name="total_products"),
     path('checkout/', views.Checkout, name="checkout"),
     path('add/<int:product_id>', views.CartAdd, name="add"),
-    path('remove/<int:product_id>', views.CartRemove, name="remove"),
+    path('remove/<int:product_id>/<size>', views.CartRemove, name="remove"),
 ]

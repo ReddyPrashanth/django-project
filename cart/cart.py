@@ -9,27 +9,45 @@ class Cart(object):
             cart = self.session[settings.CART_SESSION_ID] = {}
         self.cart = cart
         
-    def add(self, product, quantity=1, update_quantity=False):
+    def add(self, product, quantity=1, size='small', update_quantity=False):
         product_id = str(product.id)
         if product_id not in self.cart:
             self.cart[product_id] = {
                 'quantity': 0,
-                'price': str(product.price)
+                'price': str(product.price),
+                'size': {
+                    size: {
+                        'quantity': 0
+                    }
+                }
             }
-        if update_quantity:
-            self.cart[product_id]['quantity'] = quantity
+        item = self.cart[product_id]
+        size_exists = size in item['size']
+        if update_quantity and size_exists:
+            item['quantity'] = item['quantity'] - item['size'][size]['quantity'] + quantity
+            item['size'][size]['quantity'] = quantity
         else:
-            self.cart[product_id]['quantity'] += quantity
+            item['quantity'] += quantity
+            if size_exists:
+                item['size'][size]['quantity'] += quantity
+            else:
+                item['size'][size] = {
+                    'quantity': quantity
+                }
         self.save()
         
     def save(self):
         self.session[settings.CART_SESSION_ID] = self.cart
         self.session.modified = True
         
-    def remove(self, product):
+    def remove(self, product, size):
         product_id = str(product.id)
-        if product_id in self.cart:
-            del self.cart[product_id]
+        if product_id in self.cart and size in self.cart[product_id]['size']:
+            if len(self.cart[product_id]['size']) > 1:
+                self.cart[product_id]['quantity'] -= self.cart[product_id]['size'][size]['quantity']
+                del self.cart[product_id]['size'][size]
+            else:
+                del self.cart[product_id]                
             self.save()
             
     def __iter__(self):
@@ -62,9 +80,9 @@ class Cart(object):
         total_price = float('{0:.2f}'.format(sub_total+tax))
         return {'sub_total': sub_total, 'tax': tax, 'total': total_price}
     
-    def get_item_total_price(self, product_id):
+    def get_item_total_price(self, product_id, size):
         item = self.cart.get(str(product_id))
-        return item['quantity'] * float(item['price'])
+        return item['size'][size]['quantity'] * float(item['price'])
     
     def clear(self):
         del self.session[settings.CART_SESSION_ID]

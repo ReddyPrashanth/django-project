@@ -45,9 +45,9 @@ function sizeSelection() {
                 this.data.color.error = 'Please select your color';
                 return;
             }
-            product_id = this.data.product_id;
+            const product_id = this.data.product_id;
             if(product_id) {
-                axios.post(`${CART_URL}/${product_id}`, {quantity: 1, update:false}, {headers})
+                axios.post(`${CART_URL}/${product_id}`, {quantity: 1, update:false, size:this.data.size.value}, {headers})
                 .then(response => {
                     total_products = response.data.total_products;
                     this.data.size.value = null;
@@ -60,7 +60,7 @@ function sizeSelection() {
                     window.dispatchEvent(event);
                     [...sizeEl.children].forEach(sib => sib.classList.remove(this.bgColor, this.textColor));
                     [...colorEl.children].forEach(sib => sib.classList.remove(this.borderColor, this.borderSize));
-                }).catch(error => console.log(error.response.data))
+                }).catch(error => alert("something went wrong. Please try again."))
             }
         }
     }

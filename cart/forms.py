@@ -1,4 +1,5 @@
 from django import forms
+from store.models import Size
 
 CART_QUANTITY_CHOICES = [(i, str(i)) for i in range(1, 20)]
 
@@ -14,3 +15,14 @@ class CartAddProductForm(forms.Form):
         initial=False, 
         widget=forms.HiddenInput
     )
+    size = forms.CharField(
+        required=True,
+        widget=forms.HiddenInput,
+        initial='small'
+    )
+    
+    def clean_size(self):
+        size = self.cleaned_data['size']
+        if Size.objects.filter(slug=size).exists():
+           return size 
+        raise forms.ValidationError("Requested size does not exist")

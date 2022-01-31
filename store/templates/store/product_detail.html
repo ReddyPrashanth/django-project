@@ -28,7 +28,7 @@
                     <h4 class="font-medium py-1">Available Sizes</h4>
                     <div id="sizes">
                         {% for size in sizes %}
-                        <button @click="onSizeSelect($event.target, {{size.id}})" class="border py-1 px-2 uppercase hover:bg-black hover:text-white">{{size.name}}</button>
+                        <button @click="onSizeSelect($event.target, '{{size.slug}}')" class="border py-1 px-2 uppercase hover:bg-black hover:text-white">{{size.name}}</button>
                         {% endfor %}
                     </div>
                     <span x-show="data.size.error" class="text-xs text-red-600" x-text="data.size.error"></span>

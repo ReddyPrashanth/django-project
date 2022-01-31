@@ -15,11 +15,11 @@ function cartState() {
                 this.data.total = data.total
             }
         },
-        updateProductQuantity(event, product_id = null) {
+        updateProductQuantity(event, product_id = null, size = null) {
             const el = event.target.getElementsByClassName('item_price')[0];
             const quantity = parseInt(event.target.elements['quantity'].value);
-            if(product_id && !isNaN(quantity)) {
-                axios.post(`${CART_URL}/${product_id}`, {quantity, update:true}, {headers})
+            if(product_id && size && !isNaN(quantity)) {
+                axios.post(`${CART_URL}/${product_id}`, {quantity, update:true, size}, {headers})
                 .then(response => {
                     const {total_products, item_total_price, tax, sub_total, total} = response.data;
                     this.init({sub_total, tax, total});
