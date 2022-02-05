@@ -1,0 +1,23 @@
+{% extends 'store/base.html' %}
+
+{% block content %}
+    <div class="container mx-auto py-4">
+        {% if step %}
+            {% include 'cart/components/checkout_steps.html' with step=step %}
+        {% endif %}
+        <div class="flex">
+            <div class="w-2/3">
+                <h2 class="text-lg uppercase text-violet-600 font-semibold mb-2">Payment method</h2>
+                <p class="text-sm mb-4">Not an actual transaction. Use dummy credit card numbers.</p>
+                <div>
+                    <h4 class="font-semibold">Credit/Debit Card</h4>
+                    <form id="payment-form">
+                        <div>
+                            <input type="text">                            
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock  %}

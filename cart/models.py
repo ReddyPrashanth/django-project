@@ -14,3 +14,17 @@ class Order(models.Model):
     order_cancelled = models.BooleanField(default=False)
     items = models.JSONField()
     created_at = models.DateTimeField(blank=True, auto_now_add=True)
+    
+class DeliveryOption(models.Model):
+    slug = models.CharField(max_length=50)
+    type = models.CharField(max_length=50)
+    price = models.FloatField()
+    description = models.TextField()
+    created_at = models.DateTimeField(blank=True, auto_now_add=True)
+    sort_order = models.PositiveSmallIntegerField()
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['slug'], name='idx_slug_delivery_option'),
+        ]
+        ordering = ['sort_order']

@@ -2,7 +2,7 @@ import json
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from .cart import Cart
-from .models import Order
+from .models import Order, DeliveryOption
 from store.models import Product
 from .forms import CartAddProductForm
 from django.forms.models import model_to_dict
@@ -47,7 +47,7 @@ def CartDetail(request):
                                         })
             sizes[size]['total_price'] = item['price'] * sizes[size]['quantity']
     return render(request, 'cart/detail.html',
-                 {'cart': cart})
+                 {'cart': cart, 'step':1})
     
 def CartRemove(request, product_id=None, size=None):
     print(size)
@@ -56,7 +56,11 @@ def CartRemove(request, product_id=None, size=None):
     cart.remove(product=product, size=size)
     return redirect('cart:detail')
 
-def Checkout(request):
+def ReviewAndPay(request):
+    cart = Cart(request)
+    return render(request, 'cart/payment.html', {'cart': cart, 'step': 3})
+
+def PlaceOrder(request):
     cart = Cart(request)
     items = []
     for item in cart:
@@ -70,4 +74,10 @@ def Checkout(request):
         total_price = cart.get_total_price()
         Order.objects.create(tax=tax, total_price=total_price, items=items)
         cart.clear()
-    return render(request, 'cart/checkout.html')
+    return render(request, 'cart/order_placed.html')
+
+def Checkout(request):
+    cart = Cart(request)
+    delivery_options = DeliveryOption.objects.all()
+    return render(request, 'cart/checkout.html', {'cart': cart, 'step':2, 'del_options': delivery_options})
+

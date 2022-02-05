@@ -1,0 +1,72 @@
+<div>
+    <ul class="flex flex-col md:flex-row list-none border-b-0 mb-4">
+        <li role="presentation">
+            <a href="{% if step >= 1 %}{% url 'cart:detail' %}{% else %}#{% endif %}" class="
+                block
+                font-medium
+                text-xs
+                leading-tight
+                uppercase
+                border-b-2
+                px-6
+                py-3
+                my-2
+                hover:bg-gray-100
+                {% if step == 1 %}border-violet-600{% endif %}
+            ">
+                Shopping Cart
+            </a>
+        </li>
+        <li role="presentation">
+            <a href="{% if step >= 2 %}{% url 'cart:checkout' %}{% else %}#{% endif %}" class="
+                block
+                font-medium
+                text-xs
+                leading-tight
+                uppercase
+                border-b-2
+                px-6
+                py-3
+                my-2
+                hover:bg-gray-100
+                {% if step == 2 %}border-violet-600{% endif %}
+            ">
+                Delivery Options
+            </a>
+        </li>
+        <li role="presentation">
+            <a href="{% if step >= 3 %}{% url 'cart:review_and_pay' %}{% else %}#{% endif %}" class="
+                block
+                font-medium
+                text-xs
+                leading-tight
+                uppercase
+                border-b-2
+                px-6
+                py-3
+                my-2
+                hover:border-transparent hover:bg-gray-100
+                {% if step == 3 %}border-violet-600{% endif %}
+            ">
+                Place Order
+            </a>
+        </li>
+        <li role="presentation">
+            <a href="#" class="
+                block
+                font-medium
+                text-xs
+                leading-tight
+                uppercase
+                border-b-2
+                px-6
+                py-3
+                my-2
+                hover:border-transparent hover:bg-gray-100
+                {% if step == 4 %}border-violet-600{% endif %}
+            ">
+                Order Confirmation
+            </a>
+        </li>
+    </ul>
+</div>
