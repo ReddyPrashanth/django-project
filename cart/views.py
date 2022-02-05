@@ -1,11 +1,16 @@
 import json
-from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, redirect, render
+import stripe
 from .cart import Cart
-from .models import Order, DeliveryOption
 from store.models import Product
+from django.conf import settings
+from django.http import JsonResponse
 from .forms import CartAddProductForm
+from .models import Order, DeliveryOption
 from django.forms.models import model_to_dict
+from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import get_object_or_404, redirect, render
+
+stripe.api_key = settings.STRIPE_KEY
 
 # Create your views here.
 
@@ -13,7 +18,6 @@ def CartAdd(request, product_id):
     cart = Cart(request)
     product = get_object_or_404(Product, id=product_id)
     data = json.loads(str(request.body, encoding='utf-8'))
-    print(data)
     form = CartAddProductForm(data)
     if form.is_valid():
         cd = form.cleaned_data
@@ -27,7 +31,6 @@ def CartAdd(request, product_id):
             'total': checkout_params['total']
         }, status=200)
     else:
-        print(form.errors)
         return JsonResponse({'message': 'Unable to add to cart. Please try again.'}, status=400)
 
 def TotalProducts(request):
@@ -50,7 +53,6 @@ def CartDetail(request):
                  {'cart': cart, 'step':1})
     
 def CartRemove(request, product_id=None, size=None):
-    print(size)
     cart = Cart(request)
     product = get_object_or_404(Product, id=product_id)
     cart.remove(product=product, size=size)
@@ -61,6 +63,12 @@ def ReviewAndPay(request):
     return render(request, 'cart/payment.html', {'cart': cart, 'step': 3})
 
 def PlaceOrder(request):
+    payment_intent = request.GET.get('payment_intent', None)
+    client_secret = request.GET.get('payment_intent_client_secret', None)
+    redirect_status = request.GET.get('redirect_status', None)
+    payment_succeded = False
+    if(redirect_status == 'succeeded'):
+        payment_succeded = True
     cart = Cart(request)
     items = []
     for item in cart:
@@ -72,7 +80,16 @@ def PlaceOrder(request):
     if(len(items) > 0):
         tax = cart.get_tax()
         total_price = cart.get_total_price()
-        Order.objects.create(tax=tax, total_price=total_price, items=items)
+        order_id = cart.get_order_id()
+        Order.objects.create(
+            order_id=order_id,
+            tax=tax, 
+            total_price=total_price, 
+            items=items, 
+            payment_intent=payment_intent,
+            payment_intent_client_secret=client_secret,
+            payment_succeded=payment_succeded
+        )
         cart.clear()
     return render(request, 'cart/order_placed.html')
 
@@ -81,3 +98,20 @@ def Checkout(request):
     delivery_options = DeliveryOption.objects.all()
     return render(request, 'cart/checkout.html', {'cart': cart, 'step':2, 'del_options': delivery_options})
 
+@csrf_exempt
+def CreatePayment(request):
+    cart = Cart(request)
+    print(cart.get_order_id())
+    try:
+        intent = stripe.PaymentIntent.create(
+            amount = int(cart.get_total_price()* 100),
+            currency='usd',
+            payment_method_types = ["card"],
+            metadata = {
+                "order_id": cart.get_order_id()
+            }
+        )
+        return JsonResponse({'clientSecret': intent['client_secret']})
+    except Exception as e:
+        print(e)
+        return JsonResponse({'error': str(e)}, status=403)

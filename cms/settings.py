@@ -161,3 +161,5 @@ SNS_ARN = 'arn:aws:sns:us-east-2:424848754882:portfolio-contact'
 # CART Session
 
 CART_SESSION_ID = 'cart_session'
+
+STRIPE_KEY = getenv('STRIPE_KEY', '')

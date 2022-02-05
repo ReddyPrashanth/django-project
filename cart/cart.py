@@ -1,3 +1,4 @@
+import uuid
 from django.conf import settings
 from store.models import Product
 
@@ -5,9 +6,12 @@ class Cart(object):
     def __init__(self, request):
         self.session = request.session
         cart = self.session.get(settings.CART_SESSION_ID)
+        order_id = self.session.get('order_id')
         if not cart:
             cart = self.session[settings.CART_SESSION_ID] = {}
+            order_id = self.session['order_id'] = str(uuid.uuid4())
         self.cart = cart
+        self.order_id = order_id
         
     def add(self, product, quantity=1, size='small', update_quantity=False):
         product_id = str(product.id)
@@ -83,6 +87,9 @@ class Cart(object):
     def get_item_total_price(self, product_id, size):
         item = self.cart.get(str(product_id))
         return item['size'][size]['quantity'] * float(item['price'])
+    
+    def get_order_id(self):
+        return self.order_id
     
     def clear(self):
         del self.session[settings.CART_SESSION_ID]

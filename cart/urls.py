@@ -9,6 +9,7 @@ app_name = 'cart'
 urlpatterns = [
     path('', views.CartDetail, name="detail"),
     path('review-and-pay/', views.ReviewAndPay, name="review_and_pay"),
+    path('create-payment-intent', views.CreatePayment, name="create_payment"),
     path('place-order/', views.PlaceOrder, name="place_order"),
     path('total-products/', views.TotalProducts, name="total_products"),
     path('checkout/', views.Checkout, name="checkout"),
