@@ -1,0 +1,8 @@
+<div class="border rounded p-2 mb-4">
+    <h4 class="font-medium text-xs mb-2">Size</h4>
+    <div x-data="sizeFilterState()">
+        {% for size in sizes %}
+            <button @click="onSizeSelect({{size.id}})" class="text-xs border font-medium px-2 rounded {% if request.GET.size == size.id|stringformat:'i'%}text-white bg-violet-600 cursor-not-allowed{% endif %}" {% if request.GET.size == size.id|stringformat:'i'%}disabled{% endif %}>{{size.name}}</button>
+        {% endfor %}
+    </div>
+</div>

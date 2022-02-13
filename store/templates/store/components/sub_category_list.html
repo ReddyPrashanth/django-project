@@ -1,0 +1,19 @@
+<div @mouseleave="setToggle('{{category.slug}}')">
+    <div @mouseover="setToggle('{{category.slug}}')" class="relative uppercase font-semibold p-2 hover:border-b-2 hover:border-black">
+        {{category.name}}
+    </div>
+    <div x-show="toggle.{{category.slug}}" class="origin-top-right absolute w-full right-0 bg-white border focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+        <div class="flex justify-center" role="none">
+            {% for sub_category in category.subcategory_set.all %}
+            <div class="p-4">
+                <h4 class="font-medium uppercase text-sm">{{sub_category.name}}</h4>
+                <div class="text-xs font-light">
+                    {% for style in sub_category.style_set.all %}
+                    <a href="{% url 'store:products' category=category.slug subcategory=sub_category.slug style=style.slug %}" class="block py-1">{{style.name}}</a>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

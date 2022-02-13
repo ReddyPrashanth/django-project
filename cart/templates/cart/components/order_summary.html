@@ -1,0 +1,18 @@
+<div class="border rounded p-2 mb-2">
+    <h2 class="font-bold text-lg mb-4">ORDER SUMMARY</h2>
+    <div>
+        <div class="text-sm flex justify-between my-1">
+            <h4>SUB TOTAL</h4>
+            <p>{{cart.get_sub_total}}</p>
+        </div>
+        <div class="my-1 text-sm flex justify-between">
+            <h4>TAX(10%)</h4>
+            <p>{{cart.get_tax}}</p>
+        </div>
+        <hr>
+        <div class="my-1 text-sm flex justify-between">
+            <h4 class="font-semibold">TOTAL</h4>
+            <p>{{cart.get_total_price}}</p>
+        </div>
+    </div>
+</div>

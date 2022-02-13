@@ -1,0 +1,9 @@
+{% load static %}
+<a href="{% url 'store:product_detail' product.slug %}" class="border text-sm p-4 rounded hover:shadow-md">
+    <div class="flex items-center justify-center mb-4">
+        <img src="{% static 'app/images/product.png' %}" alt="{{product.name}}">
+    </div>
+    <h4 class="font-semibold">{{product.name}}</h4>
+    <p class="text-xs">{{product.description}}</p>
+    <p>Price: ${{product.price}}</p>
+</a>

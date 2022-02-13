@@ -1,0 +1,41 @@
+{% extends 'store/base.html' %}
+{% load static %}
+{% block content %}
+    <div class="px-4 flex">
+        <div class="w-1/5 lg:w-1/6 border-r py-4 pr-2">
+            <h4 class="font-medium text-violet-600 text-sm mb-4">Product Filters</h4>
+            {% include 'store/components/product_size_filter.html' %}
+            {% include 'store/components/price_range_filter.html' %}
+        </div>
+        <div class="w-4/5 lg:w-5/6 py-4 pl-2">
+            <div class="mb-4">
+                <div x-data="clearFilterState()" class="text-xs flex items-center">
+                    {% for k,v in request.GET.items %}
+                        {% if k != 'page' %}
+                        <div class="border flex p-1 mr-2">
+                            <p class="uppercase">{{k}} {{v}}</p>
+                            <button @click="removeFilter('{{k}}')" class="text-gray-400 ml-2 px-1 hover:bg-gray-200">X</button>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                    <div class="border flex p-1 mr-2">
+                        <a href="{{request.path}}" class="hover:underline">CLEAR FILTERS</a>
+                    </div>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {% for product in page_obj %}
+                    {% include 'store/components/product_card.html' with product=product %}
+                {% empty %}
+                    <div class="text-center">
+                        No products found.
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="text-center">
+                    {% include 'components/pagination.html' with page_obj=page_obj%}
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'app/js/store/products.js' %}"></script>
+{% endblock  %}

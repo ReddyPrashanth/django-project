@@ -1,0 +1,24 @@
+<div class="text-sm">
+    <h2 class="text-lg font-semibold mt-4 uppercase text-violet-600">Delivery Options</h2>
+    {% for opt in options %}
+        <div class="p-2 border rounded my-4 flex items-center">
+            <div>
+                <h4 class="mb-2 font-semibold uppercase">{{opt.type}}</h4>
+                <p>{{opt.description}}</p>
+            </div>
+            <div class="ml-2">
+                <input type="radio" name="del_option" class="
+                    w-4 
+                    h-4 
+                    border 
+                    border-gray-300 
+                    bg-white
+                    focus:outline-none
+                    transition
+                    duration-200
+                    cursor-pointer
+                    ">
+            </div>
+        </div>
+    {% endfor %}
+</div>

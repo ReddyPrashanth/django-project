@@ -1,22 +1,18 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CMS project</title>
-    {% comment %} <link rel="stylesheet" href="{% static "css/styles.css"%}"> {% endcomment %}
+    <title>Review and pay</title>
     <script defer src="{% static "app/js/alpine.js"%}"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script>
-        var token = "{{ csrf_token }}";
-    </script>
+    <script src="https://js.stripe.com/v3/"></script>
 </head>
 <body class="flex flex-col min-h-screen">
     <header>
-        <div x-data="{loading: false}" x-on:loading.window = "loading = !loading" x-show="loading" id="spinner" aria-hidden="true" class="flex overflow-y-auto overflow-x-hidden fixed right-0 left-0 top-4 z-50 justify-center items-center md:h-full md:inset-0">
+        <div x-data="{loading: false}" x-on:loading.window = "loading = !loading" x-show="loading" id="spinner" aria-hidden="true" class="flex overflow-y-auto overflow-x-hidden fixed right-0 left-0 top-4 z-50 justify-center items-center md:h-full md:inset-0 bg-gray-200 bg-opacity-25">
             <div class="relative px-4 w-full max-w-md h-full md:h-auto">
                 <div class=" flex justify-center items-center">
                     <div class="animate-spin rounded-full h-10 w-10 border-x-2 border-gray-900"></div>
@@ -29,29 +25,39 @@
                     <span class="text-lg font-semibold text-violet-600">CMS Blog</span>
                 </a>
             </div>
-            <div>
-                {% include 'components/nav_link.html' with link="store:index" title="Store" margin=True %}
-                {% include 'components/nav_link.html' with link="core:portfolio" title="Portfolio" margin=True %}
-            {% if user.is_authenticated %}
-                {% include 'components/nav_link.html' with link="blog:index" title="Blog" margin=True %}
-                {% include 'components/account_menu.html' %}
-            {% else %}
-                {% include 'components/nav_link.html' with link="account:login" title="login" %}
-            {% endif %}
-            </div>
         </nav>
     </header>
-    <main class="container mx-auto py-2 flex-grow">
-        {% block content %}
-        {% endblock  %}
+    <main class="flex-grow">
+        <div class="container mx-auto py-4">
+            {% if step %}
+                {% include 'cart/components/checkout_steps.html' with step=step %}
+            {% endif %}
+            <div class="flex">
+                <div class="w-2/3">
+                    <h2 class="text-lg uppercase text-violet-600 font-semibold mb-2">Payment method</h2>
+                    <p class="text-sm mb-4">Not an actual transaction. Use dummy credit card numbers.</p>
+                    <div>
+                        <h4 class="font-semibold">Credit/Debit Card</h4>
+                        <form id="payment-form" class="mt-4">
+                            <div id="payment-element">  
+                            </div>
+                            <button class="border p-1 mt-4 rounded uppercase bg-black text-white" id="submit">
+                                <span id="button-text">Pay now</span>
+                            </button>
+                            <div id="payment-message" class="hidden text-red-500"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
     <footer class="border-gray-200 p-4 border flex items-center justify-between">
         <div class="text-xs">
-            <p>@ Copyright 2022 CMS blog. All rights reserved.</p>
+            <p>@ Powered by django framework, tailwind and alpine.js</p>
         </div>
         <div class="text-xs flex">
             <a href="https://www.facebook.com/" target="_blank" class="ml-2">
-                <svg version="1.1" class="h-8 w-8 border border-violet-600 p-1 rounded-full" viewBox="0 0 310 310" style="enable-background:new 0 0 310 310;" xml:space="preserve">
+                <svg version="1.1" class="h-8 w-8 border border-violet-600 p-1 rounded-lg" viewBox="0 0 310 310" style="enable-background:new 0 0 310 310;" xml:space="preserve">
                     <g id="XMLID_834_">
                         <path id="XMLID_835_" d="M81.703,165.106h33.981V305c0,2.762,2.238,5,5,5h57.616c2.762,0,5-2.238,5-5V165.765h39.064
                             c2.54,0,4.677-1.906,4.967-4.429l5.933-51.502c0.163-1.417-0.286-2.836-1.234-3.899c-0.949-1.064-2.307-1.673-3.732-1.673h-44.996
@@ -62,7 +68,7 @@
                 </svg>
             </a>
             <a href="https://twitter.com/?lang=en" target="_blank" class="ml-2">
-                <svg version="1.1" class="h-8 w-8 border border-violet-600 p-1 rounded-full" viewBox="0 0 310 310" style="enable-background:new 0 0 310 310;" xml:space="preserve">
+                <svg version="1.1" class="h-8 w-8 border border-violet-600 p-1 rounded-lg" viewBox="0 0 310 310" style="enable-background:new 0 0 310 310;" xml:space="preserve">
                     <g id="XMLID_826_">
                         <path id="XMLID_827_" d="M302.973,57.388c-4.87,2.16-9.877,3.983-14.993,5.463c6.057-6.85,10.675-14.91,13.494-23.73
                             c0.632-1.977-0.023-4.141-1.648-5.434c-1.623-1.294-3.878-1.449-5.665-0.39c-10.865,6.444-22.587,11.075-34.878,13.783
@@ -80,7 +86,7 @@
                 </svg>
             </a>
             <a href="https://www.instagram.com/" target="_blank" class="ml-2">
-                <svg version="1.1" class="h-8 w-8 border border-violet-600 p-1 rounded-full" viewBox="0 0 300 300" style="enable-background:new 0 0 300 300;" xml:space="preserve">
+                <svg version="1.1" class="h-8 w-8 border border-violet-600 p-1 rounded-lg" viewBox="0 0 300 300" style="enable-background:new 0 0 300 300;" xml:space="preserve">
                     <g id="XMLID_504_">
                         <path id="XMLID_505_" d="M38.52,0.012h222.978C282.682,0.012,300,17.336,300,38.52v222.978c0,21.178-17.318,38.49-38.502,38.49
                             H38.52c-21.184,0-38.52-17.313-38.52-38.49V38.52C0,17.336,17.336,0.012,38.52,0.012z M218.546,33.329
@@ -94,7 +100,7 @@
                 </svg>
             </a>
             <a href="https://www.google.com/" target="_blank" class="ml-2">
-                <svg class="h-8 w-8 border border-violet-600 p-1 rounded-full" viewBox="0 0 24 24" version="1.1">
+                <svg class="h-8 w-8 border border-violet-600 p-1 rounded-lg" viewBox="0 0 24 24" version="1.1">
                     <title>google</title>
                     <desc>Created with sketchtool.</desc>
                     <g id="brand" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -106,5 +112,7 @@
             </a>
         </div>
     </footer>
+    <script src="{% static 'app/js/store/base.js' %}"></script>
+    <script src="{% static 'app/js/cart/payment.js' %}"></script>
 </body>
 </html>

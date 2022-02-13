@@ -1,0 +1,11 @@
+{% load store_tags %}
+<div class="border rounded p-2 mb-4">
+    <h4 class="font-medium text-xs mb-2">Price</h4>
+    <div>
+        <a class="text-xs block py-1 hover:text-violet-600" href="?{% build_query page=1 min_price=1 max_price=25 %}">Under $25</a>
+        <a class="text-xs block py-1 hover:text-violet-600" href="?{% build_query page=1 min_price=25 max_price=50 %}">$25 to $50</a>
+        <a class="text-xs block py-1 hover:text-violet-600" href="?{% build_query page=1 min_price=50 max_price=100 %}">$50 to $100</a>
+        <a class="text-xs block py-1 hover:text-violet-600" href="?{% build_query page=1 min_price=100 max_price=200 %}">$100 to $200</a>
+        <a class="text-xs block pt-1 hover:text-violet-600" href="?{% build_query page=1 min_price=200 max_price=1000 %}">$200 & Above</a>
+    </div>
+</div>

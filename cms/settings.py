@@ -36,6 +36,8 @@ DEVELOPMENT_MODE = getenv('DEVELOPMENT_MODE', 'False') == 'True'
 # Application definition
 
 INSTALLED_APPS = [
+    'cart.apps.CartConfig',
+    'store.apps.StoreConfig',
     'core.apps.CoreConfig',
     'account.apps.AccountConfig',
     'blog.apps.BlogConfig',
@@ -155,3 +157,9 @@ LOGIN_REDIRECT_URL = '/home/'
 # SNS Config
 
 SNS_ARN = 'arn:aws:sns:us-east-2:424848754882:portfolio-contact'
+
+# CART Session
+
+CART_SESSION_ID = 'cart_session'
+
+STRIPE_KEY = getenv('STRIPE_KEY', '')

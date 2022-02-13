@@ -1,0 +1,35 @@
+[
+{
+    "model": "store.category",
+    "pk": 1,
+    "fields": {
+        "name": "Men",
+        "slug": "men",
+        "description": "Men's Category",
+        "sort_order": 0,
+        "created_at": "2022-01-23T19:36:09.482Z"
+    }
+},
+{
+    "model": "store.category",
+    "pk": 2,
+    "fields": {
+        "name": "Women",
+        "slug": "women",
+        "description": "Women's Category",
+        "sort_order": 1,
+        "created_at": "2022-01-23T19:36:09.485Z"
+    }
+},
+{
+    "model": "store.category",
+    "pk": 3,
+    "fields": {
+        "name": "Kids",
+        "slug": "kids",
+        "description": "Kid's Category",
+        "sort_order": 2,
+        "created_at": "2022-01-23T19:36:09.488Z"
+    }
+}
+]

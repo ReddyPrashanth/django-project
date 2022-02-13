@@ -1,0 +1,65 @@
+{% extends 'store/base.html' %}
+
+{% load static %}
+{% block content %}
+    <div class="container mx-auto py-4">
+        <div class="flex">
+            <div class="w-1/2 lg:w-2/3">
+                <div class="flex items-center h-80 justify-center border rounded mr-4 p-4">
+                    <img src="{% static 'app/images/product.png' %}" alt="{{product.name}}">
+                </div>
+                <div class="mt-8">
+                    <h2 class="font-semibold text-2xl">SPECIFICATIONS</h2>
+                    <ul class="my-4 text-sm list-disc list-inside">
+                        <li class="my-2">Ribbed crewneck</li>
+                        <li class="my-2">100% cotton single jersey</li>
+                        <li class="my-2">Supports the Better Cotton Initiative</li>
+                        <li class="my-2">Imported</li>
+                        <li class="my-2">Product code: H16014</li>
+                    </ul>
+                </div>
+            </div>
+            <div x-data="sizeSelection()" x-init="init({{product.id}})" class="w-1/2 lg:w-1/3">
+                {% include 'store/components/add_cart_modal.html' %}
+                <h2 class="italic text-gray-600 text-2xl font-medium">{{product.name}}</h2>
+                <p class="text-sm">{{product.description}}</p>
+                <p class="font-medium mt-6">${{product.price}}</p>
+                <div class="mt-4 text-sm">
+                    <h4 class="font-medium py-1">Available Sizes</h4>
+                    <div id="sizes">
+                        {% for size in sizes %}
+                        <button @click="onSizeSelect($event.target, '{{size.slug}}')" class="border py-1 px-2 uppercase hover:bg-black hover:text-white">{{size.name}}</button>
+                        {% endfor %}
+                    </div>
+                    <span x-show="data.size.error" class="text-xs text-red-600" x-text="data.size.error"></span>
+                </div>
+                <div class="mt-4 text-sm">
+                    <h4 class="font-medium py-1">Available Colors</h4>
+                    <div id="colors">
+                        {% for inventory in product.inventory %}
+                            <button @click="onColorSelect($event.target, {{inventory.color.id}})" class="px-3 py-1 bg-{{inventory.color.name}}-800 mr-1 text-transparent">p</button>
+                        {% endfor %}
+                    </div>
+                    <span x-show="data.color.error" class="text-xs text-red-600" x-text="data.color.error"></span>
+                </div>
+                <div class="mt-6">
+                    <button @click="addToCart()" class="bg-black hover:text-gray-300 text-white py-1 px-4">ADD TO BAG &rarr;</button>
+                </div>
+                <div class="mt-10">
+                    <div class="text-sm font-light hover:underline hover:cursor-pointer">JOIN CREATORS CLUB TO GET UNLIMITED FREE STANDARD SHIPPING, RETURNS, & EXCHANGES</div>
+                </div>
+            </div>
+        </div>
+        <div class="py-4 container mx-auto">
+            <h2 class="uppercase font-semibold text-lg mb-2">Featured Products</h2>
+            <div class="flex overflow-x-auto space-x-2">
+                {% for inventory in featured %}
+                <div class="flex flex-shrink-0 w-52">
+                    {% include 'store/components/product_card.html' with product=inventory.product %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'app/js/store/product.js' %}"></script>
+{% endblock  %}
