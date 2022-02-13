@@ -1,19 +1,19 @@
 #!/bin/bash
 
 NAME="cms"
-DIR=/home/psreepathi/Desktop/Python/Django/cms
-USER=psreepathi
-GROUP=psreepathi
+DIR=/home/ubuntu/django/cms
+USER=ubuntu
+GROUP=ubuntu
 WORKERS=2
-SOCKFILE=unix:/home/psreepathi/Desktop/Python/Django/gunicorn.sock
+SOCKFILE=unix:/home/ubuntu/django/gunicorn.sock
 DJANGO_SETTINGS_MODULE=cms.settings
 DJANGO_WSGI_MODULE=cms.wsgi
 LOG_LEVEL=debug
 cd $DIR
-source /home/psreepathi/Desktop/Python/Django/django/bin/activate
+source /home/ubuntu/django/django/bin/activate
 export DJANGO_SETTINGS_MODULE=$DJANGO_SETTINGS_MODULE
 
-exec /home/psreepathi/Desktop/Python/Django/django/bin/gunicorn ${DJANGO_WSGI_MODULE}:application \
+exec /home/ubuntu/django/django/bin/gunicorn ${DJANGO_WSGI_MODULE}:application \
 --name $NAME \
 --workers $WORKERS \
 --user=$USER \
